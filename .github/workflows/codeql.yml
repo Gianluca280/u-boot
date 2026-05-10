@@ -20,7 +20,11 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        
+        # Forza il caricamento solo della tua query
+        queries: ./.github/codeql/queries/taint_analysis.ql
+        # Impedisce a GitHub di aggiungere le sue query standard
+        config: |
+          disable-default-queries: true
 
     - name: Build U-Boot
       run: |
@@ -36,4 +40,4 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:c-cpp"
-        queries: ./custom_analysis.ql
+        # Qui lasciamo pulito per evitare il warning giallo
