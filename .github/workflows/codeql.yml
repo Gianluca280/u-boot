@@ -24,18 +24,13 @@ jobs:
     - name: Build U-Boot
       run: |
         sudo apt-get update
-        # Installiamo tutte le dipendenze critiche per U-Boot
-        sudo apt-get install -y \
-          build-essential \
-          libsdl2-dev \
-          python3-dev \
-          swig \
-          libpython3-dev \
-          bison \
-          flex \
-          device-tree-compiler \
-          pkg-config \
-          libssl-dev
+        sudo apt-get install -y libsdl2-dev build-essential device-tree-compiler bison flex
+        
+        # Configurazione sandbox
+        make sandbox_defconfig
+        
+        # COMPILAZIONE: Aggiungiamo HOSTCFLAGS="-fcommon" per risolvere l'errore yylloc
+        make -j$(nproc) HOSTCFLAGS="-fcommon" NO_SDL=1
 
         # Configurazione sandbox e compilazione forzata senza SDL
         make sandbox_defconfig
