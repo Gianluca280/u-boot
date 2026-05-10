@@ -20,11 +20,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        # Il "+" aggiunge la tua query a quelle standard. 
-        # Se vuoi vedere SOLO la tua, usa solo il percorso senza il +
-        queries: +./custom_analysis.ql
-        # Forza GitHub a ricalcolare tutto da zero
-        setup-python-dependencies: false
+        
 
     - name: Build U-Boot
       run: |
@@ -40,3 +36,4 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:c-cpp"
+        queries: ./custom_analysis.ql
