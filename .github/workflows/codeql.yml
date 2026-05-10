@@ -21,7 +21,7 @@ jobs:
       with:
         languages: c-cpp
         # Forza il caricamento solo della tua query
-        queries: ./custom_analysis.ql
+        queries: ${{ github.workspace }}/custom_analysis.ql
         # Impedisce a GitHub di aggiungere le sue query standard
         config: |
           disable-default-queries: true
