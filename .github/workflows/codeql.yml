@@ -20,8 +20,8 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        queries: ./.github/codeql/queries/taint_analysis.ql
-
+        queries: +./.github/codeql/queries/taint_analysis.ql
+        
     - name: Build U-Boot
       run: |
         sudo apt-get update
