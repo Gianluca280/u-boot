@@ -22,7 +22,9 @@ jobs:
         languages: c-cpp
         # Il "+" aggiunge la tua query a quelle standard. 
         # Se vuoi vedere SOLO la tua, usa solo il percorso senza il +
-        queries: ./.github/codeql/queries/taint_analysis.ql
+        queries: +./custom_analysis.ql
+        # Forza GitHub a ricalcolare tutto da zero
+        setup-python-dependencies: false
 
     - name: Build U-Boot
       run: |
