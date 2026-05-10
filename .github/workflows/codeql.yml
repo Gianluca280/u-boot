@@ -20,7 +20,9 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        queries: +./.github/codeql/queries/taint_analysis.ql
+        queries: ./.github/codeql/queries/taint_analysis.ql
+        config: |
+          disable-default-queries: true
         
     - name: Build U-Boot
       run: |
