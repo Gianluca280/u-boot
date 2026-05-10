@@ -20,9 +20,9 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        # Forza il caricamento solo della tua query
-        queries: custom_analysis.ql
-        # Impedisce a GitHub di aggiungere le sue query standard
+        # Usiamo il percorso relativo esplicito
+        queries: ./custom_analysis.ql
+        # Fondamentale per forzare GitHub a guardare SOLO il tuo file
         config: |
           disable-default-queries: true
 
@@ -35,6 +35,11 @@ jobs:
         export HOSTCFLAGS="-fcommon"
         export KBUILD_HOSTCFLAGS="-fcommon"
         make -j$(nproc) HOSTCFLAGS="$HOSTCFLAGS" KBUILD_HOSTCFLAGS="$KBUILD_HOSTCFLAGS" NO_SDL=1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:c-cpp"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
