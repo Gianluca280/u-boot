@@ -20,23 +20,18 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
-        queries: +./.github/codeql/queries/taint_analysis.ql
-        
-        
+        # Il "+" aggiunge la tua query a quelle standard. 
+        # Se vuoi vedere SOLO la tua, usa solo il percorso senza il +
+        queries: ./.github/codeql/queries/taint_analysis.ql
+
     - name: Build U-Boot
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsdl2-dev build-essential device-tree-compiler bison flex
-        
-        # Pulizia completa per evitare residui dei tentativi falliti
+        sudo apt-get install -y libsdl2-dev build-essential device-tree-compiler bison flex libssl-dev
         make distclean
         make sandbox_defconfig
-        
-        # Esportiamo i flag per il compilatore host
         export HOSTCFLAGS="-fcommon"
         export KBUILD_HOSTCFLAGS="-fcommon"
-        
-        # Lanciamo la build forzando i flag e disabilitando SDL
         make -j$(nproc) HOSTCFLAGS="$HOSTCFLAGS" KBUILD_HOSTCFLAGS="$KBUILD_HOSTCFLAGS" NO_SDL=1
 
     - name: Perform CodeQL Analysis
