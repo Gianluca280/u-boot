@@ -20,6 +20,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
+        queries: ./.github/codeql/queries/taint_analysis.ql
 
     - name: Build U-Boot
       run: |
@@ -40,4 +41,4 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
-        queries: ./.github/codeql/queries/taint_analysis.ql
+        category: "/language:c-cpp"
