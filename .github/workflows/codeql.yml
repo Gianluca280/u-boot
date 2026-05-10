@@ -26,22 +26,16 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libsdl2-dev build-essential device-tree-compiler bison flex
         
-        # Configurazione sandbox
-        make sandbox_defconfig
-        
-        # COMPILAZIONE: Aggiungiamo HOSTCFLAGS="-fcommon" per risolvere l'errore yylloc
-        make -j$(nproc) HOSTCFLAGS="-fcommon" NO_SDL=1
-
-        # Configurazione sandbox e compilazione forzata senza SDL
-        make sandbox_defconfig
-        make -j$(nproc) NO_SDL=1
-        
-        # Pulizia e configurazione
+        # Pulizia completa per evitare residui dei tentativi falliti
         make distclean
         make sandbox_defconfig
         
-        # Compilazione (usiamo NO_SDL=1 se SDL dovesse dare problemi nel cloud)
-        make -j$(nproc) NO_SDL=1
+        # Esportiamo i flag per il compilatore host
+        export HOSTCFLAGS="-fcommon"
+        export KBUILD_HOSTCFLAGS="-fcommon"
+        
+        # Lanciamo la build forzando i flag e disabilitando SDL
+        make -j$(nproc) HOSTCFLAGS="$HOSTCFLAGS" KBUILD_HOSTCFLAGS="$KBUILD_HOSTCFLAGS" NO_SDL=1
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
